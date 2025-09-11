@@ -2626,6 +2626,7 @@ namespace WPEFramework {
 
 	uint32_t SystemServices::setTerritory(const JsonObject& parameters, JsonObject& response)
 	{
+		std::lock_guard<std::mutex> lock(m_territoryMutex);
 		bool resp = false;
 		if(parameters.HasLabel("territory")){
 			makePersistentDir();
@@ -2685,7 +2686,7 @@ namespace WPEFramework {
 	{
 		bool resp = false;
 
-		std::lock_guard<std::mutex> lock(m_territoryMutex);
+		
 		ofstream outdata(TERRITORYFILE);
 		if(!outdata){
 			LOGWARN(" Territory : Failed to open the file");
@@ -2706,6 +2707,8 @@ namespace WPEFramework {
 	uint32_t SystemServices::getTerritory(const JsonObject& parameters, JsonObject& response)
 	{
 		bool resp = true;
+		LOGERR("predebug mutex added");
+		std::lock_guard<std::mutex> lock(m_territoryMutex);
 		m_strTerritory = "";
 		m_strRegion = "";
 		resp = readTerritoryFromFile();
@@ -2727,7 +2730,7 @@ namespace WPEFramework {
 	bool SystemServices::readTerritoryFromFile()
 	{
 		bool retValue = true;
-		std::lock_guard<std::mutex> lock(m_territoryMutex);
+		
         try{
 		    if(Utils::fileExists(TERRITORYFILE)){
 			ifstream inFile(TERRITORYFILE);
