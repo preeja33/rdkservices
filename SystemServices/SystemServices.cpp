@@ -2684,6 +2684,8 @@ namespace WPEFramework {
 	uint32_t SystemServices::writeTerritory(string territory, string region)
 	{
 		bool resp = false;
+
+		std::lock_guard<std::mutex> lock(m_territoryMutex);
 		ofstream outdata(TERRITORYFILE);
 		if(!outdata){
 			LOGWARN(" Territory : Failed to open the file");
@@ -2725,6 +2727,7 @@ namespace WPEFramework {
 	bool SystemServices::readTerritoryFromFile()
 	{
 		bool retValue = true;
+		std::lock_guard<std::mutex> lock(m_territoryMutex);
         try{
 		    if(Utils::fileExists(TERRITORYFILE)){
 			ifstream inFile(TERRITORYFILE);
