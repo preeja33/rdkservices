@@ -331,7 +331,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTemperature)
     jsonrpc.Unsubscribe(JSON_TIMEOUT, _T("onTemperatureThresholdChanged"));
 }
 
-TEST_F(SystemService_L2Test,SystemServiceGetSet)
+TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
 {
     JSONRPC::LinkType<Core::JSON::IElement> jsonrpc(SYSTEM_CALLSIGN, L2TEST_CALLSIGN);
     StrictMock<AsyncHandlerMock> async_handler;
@@ -350,24 +350,25 @@ TEST_F(SystemService_L2Test,SystemServiceGetSet)
     TEST_LOG("setterritory");
 	std::thread t([&]() {
 		 while(count1 !=0) {
-        uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
-        EXPECT_EQ(status, Core::ERROR_NONE);
-			 count1--;
+        	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
+        	EXPECT_EQ(status, Core::ERROR_NONE);
+			count1--;
 		 }
     });
     
     TEST_LOG("getterritory");
     std::thread t1([&]() {
 		 while(count !=0) {
-        uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
-        EXPECT_EQ(status, Core::ERROR_NONE);
-			 count--;
+        	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
+        	EXPECT_EQ(status, Core::ERROR_NONE);
+			count--;
 		 }
     });
 	t.join();
 	t1.join();
 		
 }
+
 /********************************************************
 ************Test case Details **************************
 ** 1. Start Log upload
