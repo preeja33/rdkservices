@@ -341,19 +341,33 @@ TEST_F(SystemService_L2Test,SystemServiceGetSet)
     uint32_t signalled = SYSTEMSERVICEL2TEST_STATE_INVALID;
     std::string message;
     JsonObject expected_status;
+	int count1=5;
+	int count=5;
 
+   
     params["territory"] = "USA";
     params["region"] = "abcdefgggggggggggggggghasdghasgdhasgv";
     TEST_LOG("setterritory");
 	std::thread t([&]() {
+		 while(count1 !=0) {
         uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
         EXPECT_EQ(status, Core::ERROR_NONE);
+			 count1--;
+		 }
     });
     
     TEST_LOG("getterritory");
-    status = InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
-	EXPECT_EQ(Core::ERROR_NONE, status);
+    std::thread t1([&]() {
+		 while(count !=0) {
+        uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
+        EXPECT_EQ(status, Core::ERROR_NONE);
+			 count--;
+		 }
+    });
 	t.join();
+	t1.join();
+		count--;
+	}
 
 
 }
