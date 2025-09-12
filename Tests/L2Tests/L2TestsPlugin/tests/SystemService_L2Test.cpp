@@ -352,18 +352,22 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
 			sleep(1);
 		 }
     });
-    
-
-    while(count !=0) {
-		TEST_LOG("getterritory");
-        uint32_t status =InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
-        EXPECT_EQ(status, Core::ERROR_NONE);
-		count--;
-		sleep(1);
-	}
-	
+    std::thread t1([&]() {
+		 while(count !=0) {
+			 TEST_LOG("setterritory");
+        	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
+        	EXPECT_EQ(status, Core::ERROR_NONE);
+			count--;
+			sleep(1);
+		 }
+    });
+TEST_LOG("BLOCKED on join");
+   
 	t.join();
+	t1.join();
+	 TEST_LOG("sleep###");
 	sleep(10);
+	 TEST_LOG("wakeup");
 }
 #endif
 TEST_F(SystemService_L2Test,SystemServiceUploadLogsAndSystemPowerStateChange)
