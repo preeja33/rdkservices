@@ -194,7 +194,7 @@ TEST_F(SystemServicesTest, InvalidTerritory)
      int count=5;
      std::thread t([&]() {
 	     while(count1 > 0) {
-			uint32_t status =handler.Invoke(connection, _T("setTerritory"), _T("{\"territory\":\"USA\",\"region\":\"Uasmhddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\"}"));
+			handler.Invoke(connection, _T("setTerritory"), _T("{\"territory\":\"USA\",\"region\":\"Uasmhddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\"}"));
         	count1--;
 			sleep(1);
 
