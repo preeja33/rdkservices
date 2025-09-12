@@ -368,16 +368,6 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
 	t1.join();
 		
 }
-
-/********************************************************
-************Test case Details **************************
-** 1. Start Log upload
-** 2. Subscribe for powerstate change
-** 3. Subscribe for LoguploadUpdates
-** 4. Trigger system power state change from ON -> DEEP_SLEEP
-** 5. Verify UPLOAD_ABORTED event triggered because of power state
-** 6. Verify Systemstate event triggered and verify the response
-*******************************************************/
 TEST_F(SystemService_L2Test,SystemServiceUploadLogsAndSystemPowerStateChange)
 {
     JSONRPC::LinkType<Core::JSON::IElement> jsonrpc(SYSTEM_CALLSIGN,L2TEST_CALLSIGN);
