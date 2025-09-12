@@ -337,6 +337,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
     JsonObject params,params1;
     int count1=5;
 	int count=5;
+	 JsonObject result;
 
    
     params["territory"] = "USA";
