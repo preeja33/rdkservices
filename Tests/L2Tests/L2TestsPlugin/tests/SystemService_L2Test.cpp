@@ -331,6 +331,28 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTemperature)
     jsonrpc.Unsubscribe(JSON_TIMEOUT, _T("onTemperatureThresholdChanged"));
 }
 
+TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
+{
+    JSONRPC::LinkType<Core::JSON::IElement> jsonrpc(SYSTEM_CALLSIGN, L2TEST_CALLSIGN);
+    StrictMock<AsyncHandlerMock> async_handler;
+    uint32_t status = Core::ERROR_GENERAL;
+    JsonObject params,thresholds;
+    JsonObject result;
+    uint32_t signalled = SYSTEMSERVICEL2TEST_STATE_INVALID;
+    std::string message;
+    JsonObject expected_status;
+
+    params["territory"] = "USA";
+    params["region"] = "abcdefgggggggggggggggghasdghasgdhasgv";
+    TEST_LOG("setterritory");
+    status = InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
+    EXPECT_EQ(Core::ERROR_NONE, status);
+    TEST_LOG("getterritory");
+    status = InvokeServiceMethod("org.rdk.System.1", "getTerritory", params, result);
+    EXPECT_EQ(Core::ERROR_NONE, status);
+
+
+}
 /********************************************************
 ************Test case Details **************************
 ** 1. Start Log upload
