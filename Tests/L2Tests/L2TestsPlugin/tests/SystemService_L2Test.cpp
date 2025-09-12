@@ -336,7 +336,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
     JSONRPC::LinkType<Core::JSON::IElement> jsonrpc(SYSTEM_CALLSIGN, L2TEST_CALLSIGN);
     StrictMock<AsyncHandlerMock> async_handler;
     uint32_t status = Core::ERROR_GENERAL;
-    JsonObject params,thresholds;
+    JsonObject params,thresholds,params1;
     JsonObject result;
     uint32_t signalled = SYSTEMSERVICEL2TEST_STATE_INVALID;
     std::string message;
@@ -348,7 +348,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
     status = InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
     EXPECT_EQ(Core::ERROR_NONE, status);
     TEST_LOG("getterritory");
-    status = InvokeServiceMethod("org.rdk.System.1", "getTerritory", params, result);
+    status = InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
     EXPECT_EQ(Core::ERROR_NONE, status);
 
 
