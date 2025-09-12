@@ -366,10 +366,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSet)
     });
 	t.join();
 	t1.join();
-		count--;
-	}
-
-
+		
 }
 /********************************************************
 ************Test case Details **************************
