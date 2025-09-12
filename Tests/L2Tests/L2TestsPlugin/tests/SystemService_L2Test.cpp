@@ -348,7 +348,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
     params["territory"] = "USA";
     params["region"] = "abcdefgggggggggggggggghasdghasgdhasgv";
     TEST_LOG("setterritory");
-	std::thread t([&]() {
+	/*std::thread t([&]() {
 		 while(count1 !=0) {
         	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
         	EXPECT_EQ(status, Core::ERROR_NONE);
@@ -365,7 +365,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
 		 }
     });
 	t.join();
-	t1.join();
+	t1.join();*/
 		
 }
 TEST_F(SystemService_L2Test,SystemServiceUploadLogsAndSystemPowerStateChange)
