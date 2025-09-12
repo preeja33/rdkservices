@@ -194,22 +194,22 @@ TEST_F(SystemServicesTest, InvalidTerritory)
       int count=5;
      std::thread t([&]() {
 	     while(count1 > 0) {
-			TEST_LOG("setterritory in");
+			//TEST_LOG("setterritory in");
         	uint32_t status =handler.Invoke(connection, _T("setTerritory"), _T("{\"territory\":\"USA\",\"region\":\"Uasmhddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\"}"));
         	
-			TEST_LOG("setterritory exit");
+		//	TEST_LOG("setterritory exit");
 			count1--;
 			sleep(1);
-			 TEST_LOG("setterritory wakeup");
+			// TEST_LOG("setterritory wakeup");
 		 }
     });
     std::thread t1([&]() {
 		while(count > 0) {
-			 TEST_LOG("getterritory in");
+			// TEST_LOG("getterritory in");
         	handler.Invoke(connection, _T("getTerritory"), _T("{}"), response);
 			count--;
 			sleep(1);
-			TEST_LOG("getterritory wakeup");
+			//TEST_LOG("getterritory wakeup");
 		}
     });
     TEST_LOG("BLOCKED on join");
