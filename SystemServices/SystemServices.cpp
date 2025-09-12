@@ -2631,6 +2631,7 @@ namespace WPEFramework {
 		if(parameters.HasLabel("territory")){
 			makePersistentDir();
 			string regionStr = "";
+			LOGWARN(" read from setterritory");
 			readTerritoryFromFile();//Read existing territory and Region from file
 			string territoryStr = parameters["territory"].String();
 			LOGWARN(" Territory Value : %s ", territoryStr.c_str());
@@ -2707,7 +2708,7 @@ namespace WPEFramework {
 	uint32_t SystemServices::getTerritory(const JsonObject& parameters, JsonObject& response)
 	{
 		bool resp = true;
-		LOGERR("predebug mutex added");
+		LOGERR("read from getterritory");
 		//std::lock_guard<std::mutex> lock(m_territoryMutex);
 		m_strTerritory = "";
 		m_strRegion = "";
@@ -2738,13 +2739,13 @@ namespace WPEFramework {
 			getline (inFile, str);
 			if(str.length() > 0){
 				retValue = true;
-				m_strTerritory = safeExtractAfterColon(str);
+				m_strTerritory = str.substr(str.find(":")+1,str.length());
 				LOGERR("m_strTerritory extracted after colon: %s", m_strTerritory.c_str());
 				int index = m_strStandardTerritoryList.find(m_strTerritory);
 				if((m_strTerritory.length() == 3) && (index >=0 && index <= 1100) ){
 					getline (inFile, str);
 					if(str.length() > 0){
-					    m_strRegion = safeExtractAfterColon(str);
+					    m_strRegion = str.substr(str.find(":")+1,str.length());;
 					    LOGERR("m_strRegion extracted after colon: %s", m_strRegion.c_str());
 					    if(!isRegionValid(m_strRegion))
 					    {
