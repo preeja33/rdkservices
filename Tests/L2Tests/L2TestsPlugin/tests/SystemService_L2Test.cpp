@@ -131,7 +131,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
 			 TEST_LOG("setterritory");
         	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
         	EXPECT_EQ(status, Core::ERROR_NONE);
-			 
+			 TEST_LOG("setterritory exit");
 			count1--;
 			sleep(1);
 			 TEST_LOG("setterritory wakeup");
