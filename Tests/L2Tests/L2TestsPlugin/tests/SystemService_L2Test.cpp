@@ -127,8 +127,8 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
     params["region"] = "abcdefgggggggggggggggghasdghasgdhasgvaccccccccccccccccccccccccccccccccccccccccccccccccccd544444444444444444444444444444444444444444444sadgggggggggggggggggggggggggggggggggggggggggggggggg";
     
 	std::thread t([&]() {
-		 while(count1 !=0) {
-			 TEST_LOG("setterritory");
+		 while(count1 > 0) {
+			 TEST_LOG("setterritory in");
         	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
         	EXPECT_EQ(status, Core::ERROR_NONE);
 			 TEST_LOG("setterritory exit");
@@ -138,8 +138,8 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
 		 }
     });
     std::thread t1([&]() {
-		 while(count !=0) {
-			 TEST_LOG("getterritory");
+		 while(count > 0) {
+			 TEST_LOG("getterritory in");
         	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
         	EXPECT_EQ(status, Core::ERROR_NONE);
 			count--;
