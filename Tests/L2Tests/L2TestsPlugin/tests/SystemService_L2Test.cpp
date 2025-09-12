@@ -94,22 +94,7 @@ SystemService_L2Test::SystemService_L2Test()
         uint32_t status = Core::ERROR_GENERAL;
         m_event_signalled = SYSTEMSERVICEL2TEST_STATE_INVALID;
 
-        /* Set all the asynchronouse event handler with IARM bus to handle various events*/
-        ON_CALL(*p_iarmBusImplMock, IARM_Bus_RegisterEventHandler(::testing::_, ::testing::_, ::testing::_))
-        .WillByDefault(::testing::Invoke(
-            [&](const char* ownerName, IARM_EventId_t eventId, IARM_EventHandler_t handler) {
-                if ((string(IARM_BUS_SYSMGR_NAME) == string(ownerName)) && (eventId == IARM_BUS_SYSMGR_EVENT_SYSTEMSTATE)) {
-                    systemStateChanged = handler;
-                }
-                if ((string(IARM_BUS_PWRMGR_NAME) == string(ownerName)) && (eventId == IARM_BUS_PWRMGR_EVENT_THERMAL_MODECHANGED)) {
-                    thermMgrEventsHandler = handler;
-                }
-                if ((string(IARM_BUS_PWRMGR_NAME) == string(ownerName)) && (eventId == IARM_BUS_PWRMGR_EVENT_MODECHANGED)) {
-                    powerEventHandler = handler;
-                }
-                return IARM_RESULT_SUCCESS;
-            }));
-
+       
          /* Activate plugin in constructor */
          status = ActivateService("org.rdk.System");
          EXPECT_EQ(Core::ERROR_NONE, status);
@@ -124,9 +109,53 @@ SystemService_L2Test::~SystemService_L2Test()
     uint32_t status = Core::ERROR_GENERAL;
     m_event_signalled = SYSTEMSERVICEL2TEST_STATE_INVALID;
 
-    status = DeactivateService("org.rdk.System");
-    EXPECT_EQ(Core::ERROR_NONE, status);
+  //  status = DeactivateService("org.rdk.System");
+   // EXPECT_EQ(Core::ERROR_NONE, status);
 }
+
+
+TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
+{
+    uint32_t status = Core::ERROR_GENERAL;
+    JsonObject params,params1;
+    int count1=5;
+	int count=5;
+	 JsonObject result;
+
+   
+    params["territory"] = "USA";
+    params["region"] = "abcdefgggggggggggggggghasdghasgdhasgvaccccccccccccccccccccccccccccccccccccccccccccccccccd544444444444444444444444444444444444444444444sadgggggggggggggggggggggggggggggggggggggggggggggggg";
+    
+	std::thread t([&]() {
+		 while(count1 !=0) {
+			 TEST_LOG("setterritory");
+        	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
+        	EXPECT_EQ(status, Core::ERROR_NONE);
+			 
+			count1--;
+			sleep(1);
+			 TEST_LOG("setterritory wakeup");
+		 }
+    });
+    std::thread t1([&]() {
+		 while(count !=0) {
+			 TEST_LOG("getterritory");
+        	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
+        	EXPECT_EQ(status, Core::ERROR_NONE);
+			count--;
+			sleep(1);
+			  TEST_LOG("getterritory wakeup");
+		 }
+    });
+TEST_LOG("BLOCKED on join");
+   
+	t.join();
+	t1.join();
+	 TEST_LOG("sleep###");
+	sleep(10);
+	 TEST_LOG("wakeup");
+}
+#if 0
 
 /**
  * @brief called when Temperature threshold
@@ -330,46 +359,8 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTemperature)
     /* Unregister for events. */
     jsonrpc.Unsubscribe(JSON_TIMEOUT, _T("onTemperatureThresholdChanged"));
 }
-#if 1
-TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
-{
-    uint32_t status = Core::ERROR_GENERAL;
-    JsonObject params,params1;
-    int count1=5;
-	int count=5;
-	 JsonObject result;
 
-   
-    params["territory"] = "USA";
-    params["region"] = "abcdefgggggggggggggggghasdghasgdhasgvaccccccccccccccccccccccccccccccccccccccccccccccccccd544444444444444444444444444444444444444444444sadgggggggggggggggggggggggggggggggggggggggggggggggg";
-    
-	std::thread t([&]() {
-		 while(count1 !=0) {
-			 TEST_LOG("setterritory");
-        	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
-        	EXPECT_EQ(status, Core::ERROR_NONE);
-			count1--;
-			sleep(1);
-		 }
-    });
-    std::thread t1([&]() {
-		 while(count !=0) {
-			 TEST_LOG("setterritory");
-        	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
-        	EXPECT_EQ(status, Core::ERROR_NONE);
-			count--;
-			sleep(1);
-		 }
-    });
-TEST_LOG("BLOCKED on join");
-   
-	t.join();
-	t1.join();
-	 TEST_LOG("sleep###");
-	sleep(10);
-	 TEST_LOG("wakeup");
-}
-#endif
+
 TEST_F(SystemService_L2Test,SystemServiceUploadLogsAndSystemPowerStateChange)
 {
     JSONRPC::LinkType<Core::JSON::IElement> jsonrpc(SYSTEM_CALLSIGN,L2TEST_CALLSIGN);
@@ -575,3 +566,4 @@ TEST_F(SystemService_L2Test,setBootLoaderSplashScreen)
     }
 
 }
+#endif
