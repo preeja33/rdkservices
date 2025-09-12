@@ -122,7 +122,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
 	int count=5;
 	 JsonObject result;
 
-   
+   TEST_LOG("setterritory in1");
     params["territory"] = "USA";
     params["region"] = "abcdefgggggggggggggggghasdghasgdhasgvaccccccccccccccccccccccccccccccccccccccccccccccccccd544444444444444444444444444444444444444444444sadgggggggggggggggggggggggggggggggggggggggggggggggg";
     
