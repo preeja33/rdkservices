@@ -194,7 +194,7 @@ TEST_F(SystemServicesTest, InvalidTerritory)
      int count=5;
      std::thread t([&]() {
 	     while(count1 > 0) {
-			handler.Invoke(connection, _T("setTerritory"), _T("{\"territory\":\"USA\",\"region\":\"USaddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaac\"}");
+			EXPECT_EQ(Core::ERROR_GENERAL, handler.Invoke(connection, _T("setTerritory"), _T("{\"territory\":\"USA\",\"region\":\"asdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\"}"), response));
         	
 			 count1--;
 			sleep(1);
@@ -204,7 +204,7 @@ TEST_F(SystemServicesTest, InvalidTerritory)
 	
     std::thread t1([&]() {
 		while(count > 0) {
-			handler.Invoke(connection, _T("getTerritory"), _T("{}"), response);
+			EXPECT_EQ(Core::ERROR_NONE, handler.Invoke(connection, _T("getTerritory"), _T("{}"), response));
 			count--;
 			sleep(1);
 			
