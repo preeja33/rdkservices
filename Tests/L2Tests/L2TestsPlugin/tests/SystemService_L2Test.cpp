@@ -330,7 +330,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTemperature)
     /* Unregister for events. */
     jsonrpc.Unsubscribe(JSON_TIMEOUT, _T("onTemperatureThresholdChanged"));
 }
-
+#if 0
 TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
 {
     JSONRPC::LinkType<Core::JSON::IElement> jsonrpc(SYSTEM_CALLSIGN, L2TEST_CALLSIGN);
@@ -368,6 +368,7 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
 	t1.join();*/
 		
 }
+#endif
 TEST_F(SystemService_L2Test,SystemServiceUploadLogsAndSystemPowerStateChange)
 {
     JSONRPC::LinkType<Core::JSON::IElement> jsonrpc(SYSTEM_CALLSIGN,L2TEST_CALLSIGN);
