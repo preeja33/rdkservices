@@ -330,43 +330,35 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTemperature)
     /* Unregister for events. */
     jsonrpc.Unsubscribe(JSON_TIMEOUT, _T("onTemperatureThresholdChanged"));
 }
-#if 0
+#if 1
 TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
 {
-    JSONRPC::LinkType<Core::JSON::IElement> jsonrpc(SYSTEM_CALLSIGN, L2TEST_CALLSIGN);
-    StrictMock<AsyncHandlerMock> async_handler;
     uint32_t status = Core::ERROR_GENERAL;
-    JsonObject params,thresholds,params1;
-    JsonObject result;
-    uint32_t signalled = SYSTEMSERVICEL2TEST_STATE_INVALID;
-    std::string message;
-    JsonObject expected_status;
-	int count1=5;
+    JsonObject params,params1;
+    int count1=5;
 	int count=5;
 
    
     params["territory"] = "USA";
     params["region"] = "abcdefgggggggggggggggghasdghasgdhasgv";
     TEST_LOG("setterritory");
-	/*std::thread t([&]() {
+	std::thread t([&]() {
 		 while(count1 !=0) {
         	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "setTerritory", params, result);
         	EXPECT_EQ(status, Core::ERROR_NONE);
 			count1--;
+			sleep(1);
 		 }
     });
     
     TEST_LOG("getterritory");
-    std::thread t1([&]() {
-		 while(count !=0) {
-        	uint32_t status =InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
-        	EXPECT_EQ(status, Core::ERROR_NONE);
-			count--;
-		 }
-    });
+    while(count !=0) {
+        uint32_t status =InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
+        EXPECT_EQ(status, Core::ERROR_NONE);
+		count--;
+		//sleep(1);
+	}
 	t.join();
-	t1.join();*/
-		
 }
 #endif
 TEST_F(SystemService_L2Test,SystemServiceUploadLogsAndSystemPowerStateChange)
