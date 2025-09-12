@@ -2636,23 +2636,16 @@ namespace WPEFramework {
 			string territoryStr = parameters["territory"].String();
 			LOGWARN(" Territory Value : %s ", territoryStr.c_str());
 			try{
-				int index = m_strStandardTerritoryList.find(territoryStr);
-				if((territoryStr.length() == 3) && (index >=0 && index <= 1100) ){
+				//int index = m_strStandardTerritoryList.find(territoryStr);
+				if((territoryStr.length() == 3)){
 					if(parameters.HasLabel("region")){
 						regionStr = parameters["region"].String();
 						if(regionStr != ""){
-							if(isRegionValid(regionStr)){
+							    LOGWARN(" write corrupted content");
 								resp = writeTerritory(territoryStr,regionStr);
 								LOGWARN(" territory name %s ", territoryStr.c_str());
 								LOGWARN(" region name %s", regionStr.c_str());
-							}else{
-								JsonObject error;
-								error["message"] = "Invalid region";
-								response["error"] = error;
-								LOGWARN("Please enter valid region");
-								returnResponse(resp);
-							}
-						}
+						}	
 					}else{
 						resp = writeTerritory(territoryStr,regionStr);
 						LOGWARN(" Region is empty, only territory is updated. territory name %s ", territoryStr.c_str());
