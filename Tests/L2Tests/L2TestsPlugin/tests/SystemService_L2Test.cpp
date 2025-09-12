@@ -355,13 +355,15 @@ TEST_F(SystemService_L2Test,SystemServiceGetSetTerritory)
     
 
     while(count !=0) {
-		    TEST_LOG("getterritory");
+		TEST_LOG("getterritory");
         uint32_t status =InvokeServiceMethod("org.rdk.System.1", "getTerritory", params1, result);
         EXPECT_EQ(status, Core::ERROR_NONE);
 		count--;
-		//sleep(1);
+		sleep(1);
 	}
+	
 	t.join();
+	sleep(10);
 }
 #endif
 TEST_F(SystemService_L2Test,SystemServiceUploadLogsAndSystemPowerStateChange)
