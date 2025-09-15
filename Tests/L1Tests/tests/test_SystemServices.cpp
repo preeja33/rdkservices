@@ -190,17 +190,17 @@ protected:
 TEST_F(SystemServicesTest, InvalidTerritory)
 {
 
-<<<<<<< Updated upstream
-//	EXPECT_EQ(Core::ERROR_NONE, handler.Invoke(connection, _T("getTerritory"), _T("{}"), response));
-   #if 1
-     int count1=100;
-     int count=100;
-=======
+
 	EXPECT_EQ(Core::ERROR_NONE, handler.Invoke(connection, _T("getTerritory"), _T("{}"), response));
    #if 0
+     int count1=100;
+     int count=100;
+
+	EXPECT_EQ(Core::ERROR_NONE, handler.Invoke(connection, _T("getTerritory"), _T("{}"), response));
+
      int count1=10;
      int count=10;
->>>>>>> Stashed changes
+
     std::thread t([&]() {
 	     while(count1 > 0) {
 			//EXPECT_EQ(Core::ERROR_GENERAL, handler.Invoke(connection, _T("setTerritory"), _T("{\"territory\":\"USA\",\"region\":\"89999999999999999999999666666ghhhhhhhhhhhhhhhhhhuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuusdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\"}", response);
