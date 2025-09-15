@@ -190,8 +190,8 @@ protected:
 TEST_F(SystemServicesTest, InvalidTerritory)
 {
 
-	EXPECT_EQ(Core::ERROR_NONE, handler.Invoke(connection, _T("getTerritory"), _T("{}"), response));
-   #if 0
+//	EXPECT_EQ(Core::ERROR_NONE, handler.Invoke(connection, _T("getTerritory"), _T("{}"), response));
+   #if 1
      int count1=10;
      int count=10;
     std::thread t([&]() {
