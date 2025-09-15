@@ -186,8 +186,8 @@ namespace WPEFramework {
 		std::string getStbBranchString();
                 bool makePersistentDir();
 		std::string safeExtractAfterColon(const std::string& inputLine);
-        void threadWriter();
-        void threadReader();
+        static void threadWriter();
+        static void threadReader();
 
 #if defined(USE_IARMBUS) || defined(USE_IARM_BUS)
                 void InitializeIARM();
