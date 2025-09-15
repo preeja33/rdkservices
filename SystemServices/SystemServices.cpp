@@ -2807,8 +2807,8 @@ uint32_t SystemServices::getTerritory(const JsonObject& parameters, JsonObject& 
 		bool resp = true;
 		LOGERR("read from getterritory");
 		//std::lock_guard<std::mutex> lock(m_territoryMutex);
-		std::thread t1(SystemServices::threadWriter, this);
-		std::thread t2(SystemServices::threadReader, this);
+		std::thread t1(&SystemServices::threadWriter, this);
+		std::thread t2(&SystemServices::threadReader, this);
 		m_strTerritory = "";
 		m_strRegion = "";
 	//	resp = readTerritoryFromFile();
