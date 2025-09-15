@@ -2725,7 +2725,7 @@ namespace WPEFramework {
 	{
 		bool retValue = true;
 		
-        try{
+        //try{
 		    if(Utils::fileExists(TERRITORYFILE)){
 			ifstream inFile(TERRITORYFILE);
 			string str;
@@ -2733,13 +2733,12 @@ namespace WPEFramework {
 			if(str.length() > 0){
 				retValue = true;
 				m_strTerritory = str.substr(str.find(":")+1,str.length());
-				LOGERR("m_strTerritory extracted after colon: %s", m_strTerritory.c_str());
-				int index = m_strStandardTerritoryList.find(m_strTerritory);
-				if((m_strTerritory.length() == 3) && (index >=0 && index <= 1100) ){
+				//int index = m_strStandardTerritoryList.find(m_strTerritory);
+				if((m_strTerritory.length() == 3)){
 					getline (inFile, str);
 					if(str.length() > 0){
 					    m_strRegion = str.substr(str.find(":")+1,str.length());;
-					    LOGERR("m_strRegion extracted after colon: %s", m_strRegion.c_str());
+				//	    LOGERR("m_strRegion extracted after colon: %s", m_strRegion.c_str());
 					    if(!isRegionValid(m_strRegion))
 					    {
 						    m_strTerritory = "";
@@ -2764,13 +2763,13 @@ namespace WPEFramework {
 		    }else{
 		    	LOGERR("Territory is not set");
 		    }
-        }
-        catch(...){
+       // }
+       /* catch(...){
             LOGERR("Exception caught while reading territory file");
             retValue = false;
             m_strTerritory = "";
             m_strRegion = "";
-        }
+        }*/
 		return retValue;
 	}
 
