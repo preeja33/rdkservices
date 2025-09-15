@@ -22,7 +22,7 @@ set(PLUGIN_SYSTEM_AUTOSTART false CACHE STRING "To automatically start System pl
 set(PLUGIN_SYSTEMSERVICE_STARTUPORDER "" CACHE STRING "To configure startup order of SystemServices plugin")
 
 find_package(${NAMESPACE}Plugins REQUIRED)
-if (BUILD_TEST)
+if (BUILD_TESTS)
 add_subdirectory(TestClient)
 endif ()
 
