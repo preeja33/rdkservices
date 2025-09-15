@@ -2631,17 +2631,17 @@ namespace WPEFramework {
 		if(parameters.HasLabel("territory")){
 			makePersistentDir();
 			string regionStr = "";
-		//	LOGWARN(" read from setterritory");
+			LOGWARN(" read from setterritory");
 			readTerritoryFromFile();//Read existing territory and Region from file
 			string territoryStr = parameters["territory"].String();
-		//	LOGWARN(" Territory Value : %s ", territoryStr.c_str());
-		//	try{
+			LOGWARN(" Territory Value : %s ", territoryStr.c_str());
+			try{
 				//int index = m_strStandardTerritoryList.find(territoryStr);
 				if((territoryStr.length() == 3)){
 					if(parameters.HasLabel("region")){
 						regionStr = parameters["region"].String();
 						if(regionStr != ""){
-							  //  LOGWARN(" write corrupted content");
+							    LOGWARN(" write corrupted content");
 								resp = writeTerritory(territoryStr,regionStr);
 								LOGWARN(" territory name %s ", territoryStr.c_str());
 								LOGWARN(" region name %s", regionStr.c_str());
@@ -2662,10 +2662,10 @@ namespace WPEFramework {
 					if (SystemServices::_instance)
 						SystemServices::_instance->onTerritoryChanged(m_strTerritory,territoryStr,m_strRegion,regionStr);
 				}
-		//	}
-		//	catch(...){
-		//		LOGWARN(" caught exception...");
-		//	}
+			}
+			catch(...){
+				LOGWARN(" caught exception...");
+			}
 		}else{
 			JsonObject error;
 			error["message"] =  "Invalid territory name";
@@ -2703,34 +2703,13 @@ namespace WPEFramework {
 		bool resp = true;
 		LOGERR("read from getterritory");
 		//std::lock_guard<std::mutex> lock(m_territoryMutex);
-		std::thread t1(threadWriter);
-		std::thread t2(threadReader);
 		m_strTerritory = "";
 		m_strRegion = "";
-	//	resp = readTerritoryFromFile();
+		resp = readTerritoryFromFile();
 		response["territory"] = m_strTerritory;
 		response["region"] = m_strRegion;
 		returnResponse(resp);
 	}
-
-      void threadWriter() {
-	  JsonObject parameters, response;
-	  parameters["territory"]="USA";
-	  parameters["region"]="USashbdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
-          while (true) {
-            setTerritory(parameters, reponse);
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
-        }
-      }
-
-     void threadReader() {
-         while (true) {
-            bool resp = readTerritoryFromFile();
-            
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
-        }
-     }
-
 
 	string SystemServices::safeExtractAfterColon(const std::string& inputLine) {
 	     size_t pos = inputLine.find(':');
