@@ -2635,7 +2635,7 @@ namespace WPEFramework {
 			readTerritoryFromFile();//Read existing territory and Region from file
 			string territoryStr = parameters["territory"].String();
 		//	LOGWARN(" Territory Value : %s ", territoryStr.c_str());
-		//	try{
+			try{
 				//int index = m_strStandardTerritoryList.find(territoryStr);
 				if((territoryStr.length() == 3)){
 					if(parameters.HasLabel("region")){
@@ -2662,10 +2662,10 @@ namespace WPEFramework {
 					if (SystemServices::_instance)
 						SystemServices::_instance->onTerritoryChanged(m_strTerritory,territoryStr,m_strRegion,regionStr);
 				}
-		//	}
-		//	catch(...){
-		//		LOGWARN(" caught exception...");
-		//	}
+		  }
+			catch(...){
+				LOGWARN(" caught exception...");
+			}
 		}else{
 			JsonObject error;
 			error["message"] =  "Invalid territory name";
@@ -2717,7 +2717,7 @@ namespace WPEFramework {
 	{
 		bool retValue = true;
 		
-        //try{
+        try{
 		    if(Utils::fileExists(TERRITORYFILE)){
 			ifstream inFile(TERRITORYFILE);
 			string str;
@@ -2755,13 +2755,13 @@ namespace WPEFramework {
 		    }else{
 		    	LOGERR("Territory is not set");
 		    }
-       // }
-       /* catch(...){
+       }
+        catch(...){
             LOGERR("Exception caught while reading territory file");
             retValue = false;
             m_strTerritory = "";
             m_strRegion = "";
-        }*/
+        }
 		return retValue;
 	}
 
