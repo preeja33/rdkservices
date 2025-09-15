@@ -31,6 +31,8 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <cstdio>
+#include <thread>
 #include <string>
 #include <stdio.h>
 #include <stdint.h>
@@ -93,6 +95,8 @@ typedef enum SME_t {
 	SME_getTemperatureThresholds,
 	SME_getTimeZoneDST,
 	SME_getXconfParams,
+	SME_getTerritory,
+	SME_setterritory,
 	SME_isGzEnabled,
 	SME_queryMocaStatus,
 	SME_reboot,
@@ -142,6 +146,8 @@ std::map<SME_t, std::string> SMName = {
 	{SME_getTemperatureThresholds, "getTemperatureThresholds"},
 	{SME_getTimeZoneDST, "getTimeZoneDST"},
 	{SME_getXconfParams, "getXconfParams"},
+	{SME_getTerritory, "getTerritory"},
+	{SME_setterritory, "setTerritory"},
 	{SME_isGzEnabled, "isGzEnabled"},
 	{SME_queryMocaStatus, "queryMocaStatus"},
 	{SME_reboot, "reboot"},
@@ -279,6 +285,42 @@ void getDeviceInfo(std::string methodName, JSONRPC::LinkType<Core::JSON::IElemen
 		printf("\nResponse: '%s'\n", result.c_str());
 	}
 }
+
+void threadWriter(JSONRPC::LinkType<Core::JSON::IElement> *remoteObject, std::string methodName) {
+    while (true) {
+	JsonObject parameters, response;
+	parameters["territory"]="USA";
+	parameters["region"]="USashbdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
+        invokeJSONRPC(remoteObject, methodName, parameters, response);
+	printf("writer sleep\n");
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    }
+}
+
+void threadReader(JSONRPC::LinkType<Core::JSON::IElement> *remoteObject, std::string methodName) {
+    while (true) {
+	JsonObject parameters, response;
+        invokeJSONRPC(remoteObject, methodName, parameters, response);
+	printf("reader sleep\n");
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    }
+}
+
+
+void getTerritory(std::string methodName, JSONRPC::LinkType<Core::JSON::IElement> *remoteObject)
+{
+        printf("[%llu] Inside (%s)\n", TimeStamp(), __FUNCTION__);
+
+        JsonObject parameters, response;
+        std::string result;
+	std::string methodName1 = "setTerritory";
+        std::thread writer(threadWriter, remoteObject, methodName);
+    	std::thread reader(threadReader, remoteObject, methodName1);
+
+    	writer.join();
+    	reader.join();
+}
+
 
 void getDownloadedFirmwareInfo(std::string methodName, JSONRPC::LinkType<Core::JSON::IElement> *remoteObject)
 {
@@ -934,6 +976,7 @@ int EvaluateMethods(JSONRPC::LinkType<Core::JSON::IElement>* remoteObject)
 			case SME_getTemperatureThresholds: getTemperatureThresholds(getMethodName((SME_t)retStatus), remoteObject); break;
 			case SME_getTimeZoneDST: getTimeZoneDST(getMethodName((SME_t)retStatus), remoteObject); break;
 			case SME_getXconfParams: getXconfParams(getMethodName((SME_t)retStatus), remoteObject); break;
+			case SME_getTerritory: getTerritory(getMethodName((SME_t)retStatus), remoteObject); break;
 			case SME_isGzEnabled: isGzEnabled(getMethodName((SME_t)retStatus), remoteObject); break;
 			case SME_queryMocaStatus: queryMocaStatus(getMethodName((SME_t)retStatus), remoteObject); break;
 			case SME_reboot: reboot(getMethodName((SME_t)retStatus), remoteObject); break;

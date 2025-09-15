@@ -23,9 +23,7 @@ set(PLUGIN_SYSTEMSERVICE_STARTUPORDER "" CACHE STRING "To configure startup orde
 
 find_package(${NAMESPACE}Plugins REQUIRED)
 
-if(BUILD_TESTS)
-    add_subdirectory(TestClient)
-endif()
+add_subdirectory(TestClient)
 
 add_library(${MODULE_NAME} SHARED
         SystemServices.cpp
