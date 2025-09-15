@@ -23,7 +23,7 @@ else ()
     find_package(${NAMESPACE}Protocols REQUIRED)
 endif (USE_THUNDER_R4)
 find_package(CompileSettingsDebug CONFIG REQUIRED)
-find_package(securityagent REQUIRED)
+
 
 add_executable(${PLUGIN_NAME} systemServiceTestClient.cpp)
 
@@ -31,13 +31,13 @@ set_target_properties(${PLUGIN_NAME} PROPERTIES
     CXX_STANDARD 11
     CXX_STANDARD_REQUIRED YES
     )
-set(LIBRARIES WPEFrameworkSecurityUtil)
+
 target_link_libraries(${PLUGIN_NAME}
     PRIVATE
     CompileSettingsDebug::CompileSettingsDebug
     ${SECURITY_TOKEN_LIBRARY}
     )
-target_link_libraries(${PLUGIN_NAME} PUBLIC ${LIBRARIES} PRIVATE ${NAMESPACE}Core::${NAMESPACE}Core)
+
 if (USE_THUNDER_R4)
 target_link_libraries(${PLUGIN_NAME} PRIVATE ${NAMESPACE}COM::${NAMESPACE}COM)
 else ()
