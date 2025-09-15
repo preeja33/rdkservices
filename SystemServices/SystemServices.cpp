@@ -2639,17 +2639,17 @@ namespace WPEFramework {
 					if(parameters.HasLabel("region")){
 						regionStr = parameters["region"].String();
 						if(regionStr != ""){
-							if(isRegionValid(regionStr)){
+							//if(isRegionValid(regionStr)){
 								resp = writeTerritory(territoryStr,regionStr);
 								LOGWARN(" territory name %s ", territoryStr.c_str());
 								LOGWARN(" region name %s", regionStr.c_str());
-							}else{
+							/*}else{
 								JsonObject error;
 								error["message"] = "Invalid region";
 								response["error"] = error;
 								LOGWARN("Please enter valid region");
 								returnResponse(resp);
-							}
+							}*/
 						}
 					}else{
 						resp = writeTerritory(territoryStr,regionStr);
