@@ -2703,6 +2703,7 @@ namespace WPEFramework {
 
 
 	string SystemServices::safeExtractAfterColon(const std::string& inputLine) {
+		LOGERR("safeExtractAfterColon");  
 	     size_t pos = inputLine.find(':');
              if ((pos != std::string::npos) && (pos + 1 < inputLine.length())) {
                  return inputLine.substr(pos + 1);
