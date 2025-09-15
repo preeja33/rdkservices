@@ -2627,6 +2627,8 @@ namespace WPEFramework {
 	uint32_t SystemServices::setTerritory(const JsonObject& parameters, JsonObject& response)
 	{
 		bool resp = false;
+
+		std::lock_guard<std::mutex> lock(m_territoryMutex);
 		if(parameters.HasLabel("territory")){
 			makePersistentDir();
 			string regionStr = "";
@@ -2713,7 +2715,7 @@ namespace WPEFramework {
 	bool SystemServices::readTerritoryFromFile()
 	{
 		bool retValue = true;
-		
+		std::lock_guard<std::mutex> lock(m_territoryMutex);
         try{
 		    if(Utils::fileExists(TERRITORYFILE)){
 			ifstream inFile(TERRITORYFILE);
@@ -2721,7 +2723,7 @@ namespace WPEFramework {
 			getline (inFile, str);
 			if(str.length() > 0){
 				retValue = true;
-				m_strTerritory = str.substr(str.find(":")+1,str.length());
+				m_strTerritory = safeExtractAfterColon(str);
                                 int index = m_strStandardTerritoryList.find(m_strTerritory);
                                 if((m_strTerritory.length() == 3) && (index >=0 && index <= 1100) ){
 					getline (inFile, str);
