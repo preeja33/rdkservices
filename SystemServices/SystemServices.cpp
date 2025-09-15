@@ -2790,14 +2790,14 @@ void  SystemServices::threadWriter() {
 	  parameters["territory"]="USA";
 	  parameters["region"]="USashbdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
           while (true) {
-            setTerritory(parameters, reponse);
+            setTerritory(parameters, response);
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
         }
       }
 
      void  SystemServices::threadReader() {
          while (true) {
-            bool resp = readTerritoryFromFile();
+           readTerritoryFromFile();
             
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
         }
