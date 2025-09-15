@@ -2796,6 +2796,7 @@ void  SystemServices::threadWriter() {
 
      void  SystemServices::threadReader() {
          while (true) {
+			 
            readTerritoryFromFile();
             
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
@@ -2805,9 +2806,10 @@ uint32_t SystemServices::getTerritory(const JsonObject& parameters, JsonObject& 
 	{
 		bool resp = true;
 		LOGERR("read from getterritory");
-		//std::lock_guard<std::mutex> lock(m_territoryMutex);
+		
 		std::thread t1(&SystemServices::threadWriter, this);
 		std::thread t2(&SystemServices::threadReader, this);
+		std::lock_guard<std::mutex> lock(m_territoryMutex);
 		m_strTerritory = "";
 		m_strRegion = "";
 	//	resp = readTerritoryFromFile();
