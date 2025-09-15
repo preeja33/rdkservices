@@ -2785,7 +2785,7 @@ namespace WPEFramework {
 		}
 		return true;
 	}
-void threadWriter() {
+void  SystemServices::threadWriter() {
 	  JsonObject parameters, response;
 	  parameters["territory"]="USA";
 	  parameters["region"]="USashbdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
@@ -2795,7 +2795,7 @@ void threadWriter() {
         }
       }
 
-     void threadReader() {
+     void  SystemServices::threadReader() {
          while (true) {
             bool resp = readTerritoryFromFile();
             
@@ -2807,8 +2807,8 @@ uint32_t SystemServices::getTerritory(const JsonObject& parameters, JsonObject& 
 		bool resp = true;
 		LOGERR("read from getterritory");
 		//std::lock_guard<std::mutex> lock(m_territoryMutex);
-		std::thread t1(threadWriter);
-		std::thread t2(threadReader);
+		std::thread t1(SystemServices::threadWriter, this);
+		std::thread t2(SystemServices::threadReader, this);
 		m_strTerritory = "";
 		m_strRegion = "";
 	//	resp = readTerritoryFromFile();
