@@ -256,6 +256,7 @@ namespace WPEFramework {
                 uint32_t setFriendlyName(const JsonObject& parameters, JsonObject& response);
                 uint32_t setTerritory(const JsonObject& parameters, JsonObject& response);
 		uint32_t getTerritory(const JsonObject& parameters, JsonObject& response);
+        void getTer();
 		bool readTerritoryFromFile();
 		bool isStrAlphaUpper(string strVal);
 		bool isRegionValid(string regionStr);
