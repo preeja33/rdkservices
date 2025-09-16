@@ -457,8 +457,8 @@ namespace WPEFramework {
             registerMethod("setNetworkStandbyMode", &SystemServices::setNetworkStandbyMode, this);
             registerMethod("getNetworkStandbyMode", &SystemServices::getNetworkStandbyMode, this);
             registerMethod("getPowerStateIsManagedByDevice", &SystemServices::getPowerStateIsManagedByDevice, this);
-    	    registerMethod("setTerritory", &SystemServices::setTerritory, this);
-	    registerMethod("getTerritory", &SystemServices::getTerritory, this);
+    	    registerMethod("set", &SystemServices::set, this);
+	    registerMethod("get", &SystemServices::get, this);
             registerMethod("setWakeupSrcConfiguration", &SystemServices::setWakeupSrcConfiguration, this);
 	    registerMethod("getWakeupSrcConfiguration", &SystemServices::getWakeupSrcConfiguration, this);
 
@@ -2786,7 +2786,7 @@ namespace WPEFramework {
 	}
 void  SystemServices::threadWriter() {
 	  JsonObject parameters, response;
-	   static int count =100;
+	   static int count =2000;
 	  parameters["territory"]="USA";
 	  parameters["region"]="USashbdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
           while (true) {
@@ -2797,7 +2797,7 @@ void  SystemServices::threadWriter() {
       }
 
      void  SystemServices::threadReader() {
-		  static int count =100;
+		  static int count =2000;
          while (true) {
 			 
            readTerritoryFromFile();
