@@ -2798,7 +2798,7 @@ void  SystemServices::threadWriter() {
       }
 void SystemServices::getTer() {
 	std::lock_guard<std::mutex> lock(m_territoryMutex);
-	LOGERR("getTerritory in);
+	LOGERR("getTerritory in");
 	readTerritoryFromFile();
 }
      void  SystemServices::threadReader() {
