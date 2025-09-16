@@ -2786,7 +2786,7 @@ namespace WPEFramework {
 	}
 void  SystemServices::threadWriter() {
 	  JsonObject parameters, response;
-	   static int count =100;
+	   static int count =2000;
 	  parameters["territory"]="USA";
 	  parameters["region"]="USashbdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
           while (true) {
@@ -2798,7 +2798,7 @@ void  SystemServices::threadWriter() {
       }
 
      void  SystemServices::threadReader() {
-		  static int count =100;
+		  static int count =2000;
          while (true) {
 		    std::lock_guard<std::mutex> lock(m_territoryMutex); 
            readTerritoryFromFile();
