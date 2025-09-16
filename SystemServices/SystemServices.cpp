@@ -2786,7 +2786,7 @@ namespace WPEFramework {
 	}
 void  SystemServices::threadWriter() {
 	  JsonObject parameters, response;
-	   static int count =100;
+	   static int count =1000;
 	  parameters["territory"]="USA";
 	  parameters["region"]="USashbdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
           while (true) {
@@ -2802,7 +2802,7 @@ void SystemServices::getTer() {
 	readTerritoryFromFile();
 }
      void  SystemServices::threadReader() {
-		  static int count =100;
+		  static int count =1000;
          while (true) {
 		    getTer();
           
