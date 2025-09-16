@@ -224,7 +224,7 @@ TEST_F(SystemServicesTest, InvalidTerritory)
 	t.join();
 	t1.join();
 	 
-	sleep(10);
 	#endif
+	sleep(10);
     
 }
