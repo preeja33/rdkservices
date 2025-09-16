@@ -2628,7 +2628,7 @@ namespace WPEFramework {
 	{
 		bool resp = false;
 
-		std::lock_guard<std::mutex> lock(m_territoryMutex);
+		//std::lock_guard<std::mutex> lock(m_territoryMutex);
 		if(parameters.HasLabel("territory")){
 			makePersistentDir();
 			string regionStr = "";
@@ -2716,7 +2716,7 @@ namespace WPEFramework {
 	bool SystemServices::readTerritoryFromFile()
 	{
 		bool retValue = true;
-		std::lock_guard<std::mutex> lock(m_territoryMutex);
+		
         try{
 		    if(Utils::fileExists(TERRITORYFILE)){
 			ifstream inFile(TERRITORYFILE);
@@ -2786,20 +2786,21 @@ namespace WPEFramework {
 	}
 void  SystemServices::threadWriter() {
 	  JsonObject parameters, response;
-	   static int count =2000;
+	   static int count =100;
 	  parameters["territory"]="USA";
 	  parameters["region"]="USashbdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
           while (true) {
 			  count--;
+			std::lock_guard<std::mutex> lock(m_territoryMutex);
             setTerritory(parameters, response);
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
         }
       }
 
      void  SystemServices::threadReader() {
-		  static int count =2000;
+		  static int count =100;
          while (true) {
-			 
+		    std::lock_guard<std::mutex> lock(m_territoryMutex); 
            readTerritoryFromFile();
             count--;
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
