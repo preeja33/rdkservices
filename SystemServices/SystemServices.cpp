@@ -457,9 +457,9 @@ namespace WPEFramework {
             registerMethod("setNetworkStandbyMode", &SystemServices::setNetworkStandbyMode, this);
             registerMethod("getNetworkStandbyMode", &SystemServices::getNetworkStandbyMode, this);
             registerMethod("getPowerStateIsManagedByDevice", &SystemServices::getPowerStateIsManagedByDevice, this);
-    	    registerMethod("set", &SystemServices::set, this);
-	    registerMethod("get", &SystemServices::get, this);
-            registerMethod("setWakeupSrcConfiguration", &SystemServices::setWakeupSrcConfiguration, this);
+    	     registerMethod("setTerritory", &SystemServices::setTerritory, this);
+	         registerMethod("getTerritory", &SystemServices::getTerritory, this);
+			registerMethod("setWakeupSrcConfiguration", &SystemServices::setWakeupSrcConfiguration, this);
 	    registerMethod("getWakeupSrcConfiguration", &SystemServices::getWakeupSrcConfiguration, this);
 
             // version 2 APIs
