@@ -161,7 +161,6 @@ namespace WPEFramework {
 #endif
                 pid_t m_uploadLogsPid;
                 std::mutex m_uploadLogsMutex;
-		std::mutex m_territoryMutex;
 
             public:
                 SystemServices();
@@ -185,9 +184,6 @@ namespace WPEFramework {
                 std::string getStbTimestampString();
 		std::string getStbBranchString();
                 bool makePersistentDir();
-		std::string safeExtractAfterColon(const std::string& inputLine);
-         void threadWriter();
-         void threadReader();
 
 #if defined(USE_IARMBUS) || defined(USE_IARM_BUS)
                 void InitializeIARM();
@@ -256,7 +252,6 @@ namespace WPEFramework {
                 uint32_t setFriendlyName(const JsonObject& parameters, JsonObject& response);
                 uint32_t setTerritory(const JsonObject& parameters, JsonObject& response);
 		uint32_t getTerritory(const JsonObject& parameters, JsonObject& response);
-        void getTer();
 		bool readTerritoryFromFile();
 		bool isStrAlphaUpper(string strVal);
 		bool isRegionValid(string regionStr);

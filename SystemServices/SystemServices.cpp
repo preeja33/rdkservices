@@ -457,9 +457,9 @@ namespace WPEFramework {
             registerMethod("setNetworkStandbyMode", &SystemServices::setNetworkStandbyMode, this);
             registerMethod("getNetworkStandbyMode", &SystemServices::getNetworkStandbyMode, this);
             registerMethod("getPowerStateIsManagedByDevice", &SystemServices::getPowerStateIsManagedByDevice, this);
-    	     registerMethod("setTerritory", &SystemServices::setTerritory, this);
-	         registerMethod("getTerritory", &SystemServices::getTerritory, this);
-			registerMethod("setWakeupSrcConfiguration", &SystemServices::setWakeupSrcConfiguration, this);
+    	    registerMethod("setTerritory", &SystemServices::setTerritory, this);
+	    registerMethod("getTerritory", &SystemServices::getTerritory, this);
+            registerMethod("setWakeupSrcConfiguration", &SystemServices::setWakeupSrcConfiguration, this);
 	    registerMethod("getWakeupSrcConfiguration", &SystemServices::getWakeupSrcConfiguration, this);
 
             // version 2 APIs
@@ -2627,24 +2627,30 @@ namespace WPEFramework {
 	uint32_t SystemServices::setTerritory(const JsonObject& parameters, JsonObject& response)
 	{
 		bool resp = false;
-
-		std::lock_guard<std::mutex> lock(m_territoryMutex);
 		if(parameters.HasLabel("territory")){
 			makePersistentDir();
 			string regionStr = "";
 			readTerritoryFromFile();//Read existing territory and Region from file
 			string territoryStr = parameters["territory"].String();
-		//	LOGWARN(" Territory Value : %s ", territoryStr.c_str());
+			LOGWARN(" Territory Value : %s ", territoryStr.c_str());
 			try{
 				int index = m_strStandardTerritoryList.find(territoryStr);
-                                if((territoryStr.length() == 3) && (index >=0 && index <= 1100) ){
+				if((territoryStr.length() == 3) && (index >=0 && index <= 1100) ){
 					if(parameters.HasLabel("region")){
 						regionStr = parameters["region"].String();
 						if(regionStr != ""){
+							if(isRegionValid(regionStr)){
 								resp = writeTerritory(territoryStr,regionStr);
 								LOGWARN(" territory name %s ", territoryStr.c_str());
 								LOGWARN(" region name %s", regionStr.c_str());
-						}	
+							}else{
+								JsonObject error;
+								error["message"] = "Invalid region";
+								response["error"] = error;
+								LOGWARN("Please enter valid region");
+								returnResponse(resp);
+							}
+						}
 					}else{
 						resp = writeTerritory(territoryStr,regionStr);
 						LOGWARN(" Region is empty, only territory is updated. territory name %s ", territoryStr.c_str());
@@ -2661,7 +2667,7 @@ namespace WPEFramework {
 					if (SystemServices::_instance)
 						SystemServices::_instance->onTerritoryChanged(m_strTerritory,territoryStr,m_strRegion,regionStr);
 				}
-		  }
+			}
 			catch(...){
 				LOGWARN(" caught exception...");
 			}
@@ -2678,8 +2684,6 @@ namespace WPEFramework {
 	uint32_t SystemServices::writeTerritory(string territory, string region)
 	{
 		bool resp = false;
-
-		
 		ofstream outdata(TERRITORYFILE);
 		if(!outdata){
 			LOGWARN(" Territory : Failed to open the file");
@@ -2697,26 +2701,21 @@ namespace WPEFramework {
 		return resp;
 	}
 
-	
-
-      
-
-
-	string SystemServices::safeExtractAfterColon(const std::string& inputLine) {
-		LOGERR("safeExtractAfterColon");  
-	     size_t pos = inputLine.find(':');
-             if ((pos != std::string::npos) && (pos + 1 < inputLine.length())) {
-                 return inputLine.substr(pos + 1);
-             } else {
-	           LOGERR("Territory file corrupted %s", inputLine.c_str());  
-             }		     
-             return "";
+	uint32_t SystemServices::getTerritory(const JsonObject& parameters, JsonObject& response)
+	{
+		bool resp = true;
+		m_strTerritory = "";
+		m_strRegion = "";
+		resp = readTerritoryFromFile();
+		response["territory"] = m_strTerritory;
+		response["region"] = m_strRegion;
+		returnResponse(resp);
 	}
 
 	bool SystemServices::readTerritoryFromFile()
 	{
 		bool retValue = true;
-		
+		LOGERR("Territory prdebug");
         try{
 		    if(Utils::fileExists(TERRITORYFILE)){
 			ifstream inFile(TERRITORYFILE);
@@ -2724,12 +2723,12 @@ namespace WPEFramework {
 			getline (inFile, str);
 			if(str.length() > 0){
 				retValue = true;
-				m_strTerritory = safeExtractAfterColon(str);
-                int index = m_strStandardTerritoryList.find(m_strTerritory);
-                if((m_strTerritory.length() == 3) && (index >=0 && index <= 1100) ){
+				m_strTerritory = str.substr(str.find(":"),str.length());
+				int index = m_strStandardTerritoryList.find(m_strTerritory);
+				if((m_strTerritory.length() == 3) && (index >=0 && index <= 1100) ){
 					getline (inFile, str);
 					if(str.length() > 0){
-					    m_strRegion =safeExtractAfterColon(str);
+					    m_strRegion = str.substr(str.find(":"),str.length());
 					    if(!isRegionValid(m_strRegion))
 					    {
 						    m_strTerritory = "";
@@ -2754,7 +2753,7 @@ namespace WPEFramework {
 		    }else{
 		    	LOGERR("Territory is not set");
 		    }
-       }
+        }
         catch(...){
             LOGERR("Exception caught while reading territory file");
             retValue = false;
@@ -2784,49 +2783,8 @@ namespace WPEFramework {
 		}
 		return true;
 	}
-void  SystemServices::threadWriter() {
-	  JsonObject parameters, response;
-	   static int count =1000;
-	  parameters["territory"]="USA";
-	  parameters["region"]="USashbdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
-          while (true) {
-			  count--;
-			
-            setTerritory(parameters, response);
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
-        }
-      }
-void SystemServices::getTer() {
-	std::lock_guard<std::mutex> lock(m_territoryMutex);
-	LOGERR("getTerritory in");
-	readTerritoryFromFile();
-}
-     void  SystemServices::threadReader() {
-		  static int count =1000;
-         while (true) {
-		    getTer();
-          
-            count--;
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
-        }
-     }
-uint32_t SystemServices::getTerritory(const JsonObject& parameters, JsonObject& response)
-	{
-		bool resp = true;
-		LOGERR("read from getterritory");
-		
-		std::thread t1(&SystemServices::threadWriter, this);
-		std::thread t2(&SystemServices::threadReader, this);
-		//std::lock_guard<std::mutex> lock(m_territoryMutex);
-		m_strTerritory = "";
-		m_strRegion = "";
-	//	resp = readTerritoryFromFile();
-		response["territory"] = m_strTerritory;
-		response["region"] = m_strRegion;
-		t1.join();
-		t2.join();
-		returnResponse(resp);
-	}
+
+
 	bool SystemServices::isRegionValid(string regionStr)
 	{
 		bool retVal = false;
